@@ -7,4 +7,5 @@
     <string name="server_loading_text">WARTEN AUF ANTWORT...</string>
     <string name="empty_number_text">Bitte geben Sie eine Matrikelnummer an!</string>
     <string name="server_error_text">Fehler bei der Kommunikation mit dem Server!</string>
+    <string name="btn_calculate_text">Alternierende Quersumme</string>
 </resources>
