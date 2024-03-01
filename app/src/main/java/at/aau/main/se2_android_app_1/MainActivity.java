@@ -1,9 +1,9 @@
 package at.aau.main.se2_android_app_1;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -19,8 +19,11 @@ import io.reactivex.rxjava3.disposables.Disposable;
 public class MainActivity extends AppCompatActivity {
     private Button btn_send;
     private TextView txt_serverAnswer;
+    private EditText edtext_input;
     private NetworkManager networkManager;
     private Disposable disposable;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +36,9 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        txt_serverAnswer = (TextView) findViewById(R.id.txt_serverAnswer);
-        btn_send = (Button) findViewById(R.id.btn_send);
+        edtext_input = findViewById(R.id.edtext_input);
+        txt_serverAnswer = findViewById(R.id.txt_serverAnswer);
+        btn_send = findViewById(R.id.btn_send);
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,16 +52,28 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void btn_send_onClick(View v){
-        txt_serverAnswer.setText("WAITING FOR RESPONSE...");
+        txt_serverAnswer.setText(R.string.server_loading_text);
 
-        String matrikelnummer = "12203544";
+        String matrikelnummer = edtext_input.getText().toString();
+        if (matrikelnummer.isEmpty()) {
+            txt_serverAnswer.setText(R.string.empty_number_text);
+            return;
+        }
         disposable = networkManager.calculateResult(matrikelnummer)
                                    .observeOn(AndroidSchedulers.mainThread())
                                    .subscribe(res -> {
                                                 txt_serverAnswer.setText(res);
                                               }, throwable -> {
-                                                txt_serverAnswer.setText("Fehler bei der Kommunikation mit dem Server");
-                                                Log.e("ERROR", "Fehler bei der Kommunikation mit dem Server", throwable);
+                                                txt_serverAnswer.setText(R.string.server_error_text);
                                    });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if(disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
     }
 }

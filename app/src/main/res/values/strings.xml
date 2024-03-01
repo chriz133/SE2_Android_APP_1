@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">SE2_Android_APP_1</string>
     <string name="main_activity_name">Main Screen</string>
-    <string name="btn_send_text">Send to Server</string>
-    <string name="txt_input_text">Input</string>
-    <string name="txt_answer_text">Server answer:</string>
+    <string name="btn_send_text">Abschicken</string>
+    <string name="txt_input_text">Eingabe</string>
+    <string name="txt_answer_text">Ausgabe</string>
+    <string name="server_loading_text">WARTEN AUF ANTWORT...</string>
+    <string name="empty_number_text">Bitte geben Sie eine Matrikelnummer an!</string>
+    <string name="server_error_text">Fehler bei der Kommunikation mit dem Server!</string>
 </resources>
