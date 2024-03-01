@@ -26,10 +26,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
 }
 
 dependencies {
-
+    implementation (libs.rxjava) // RxJava-Core
+    implementation (libs.rxandroid) // RxAndroid
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
