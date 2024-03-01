@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">SE2_Android_APP_1</string>
     <string name="main_activity_name">Main Screen</string>
+    <string name="btn_send_text">Send to Server</string>
+    <string name="txt_input_text">Input</string>
+    <string name="txt_answer_text">Server answer:</string>
 </resources>
