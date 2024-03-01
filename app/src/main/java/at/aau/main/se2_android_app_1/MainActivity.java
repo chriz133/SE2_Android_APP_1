@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,19 +12,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.Socket;
-import java.util.Objects;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
 
 public class MainActivity extends AppCompatActivity {
     private Button btn_send;
+    private TextView txt_serverAnswer;
     private NetworkManager networkManager;
     private Disposable disposable;
 
@@ -38,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        txt_serverAnswer = (TextView) findViewById(R.id.txt_serverAnswer);
         btn_send = (Button) findViewById(R.id.btn_send);
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,15 +48,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void btn_send_onClick(View v){
+        txt_serverAnswer.setText("WAITING FOR RESPONSE...");
 
         String matrikelnummer = "12203544";
-        byte[] matNumBytes = matrikelnummer.getBytes();
-
-        disposable = networkManager.calculateResult(matNumBytes)
+        disposable = networkManager.calculateResult(matrikelnummer)
                                    .observeOn(AndroidSchedulers.mainThread())
                                    .subscribe(res -> {
-                                                Log.d("RESULT", res);
+                                                txt_serverAnswer.setText(res);
                                               }, throwable -> {
+                                                txt_serverAnswer.setText("Fehler bei der Kommunikation mit dem Server");
                                                 Log.e("ERROR", "Fehler bei der Kommunikation mit dem Server", throwable);
                                    });
     }
