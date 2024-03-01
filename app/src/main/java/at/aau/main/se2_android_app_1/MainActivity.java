@@ -1,6 +1,7 @@
 package at.aau.main.se2_android_app_1;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,11 +14,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 
+import java.util.Locale;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
 
 public class MainActivity extends AppCompatActivity {
     private Button btn_send;
+    private Button btn_calculate;
     private TextView txt_serverAnswer;
     private EditText edtext_input;
     private NetworkManager networkManager;
@@ -39,12 +43,9 @@ public class MainActivity extends AppCompatActivity {
         edtext_input = findViewById(R.id.edtext_input);
         txt_serverAnswer = findViewById(R.id.txt_serverAnswer);
         btn_send = findViewById(R.id.btn_send);
-        btn_send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btn_send_onClick(v);
-            }
-        });
+        btn_send.setOnClickListener(this::btn_send_onClick);
+        btn_calculate = findViewById(R.id.btn_calculate);
+        btn_calculate.setOnClickListener(this::btn_calculate_onClick);
 
         networkManager = new NetworkManager();
 
@@ -54,11 +55,9 @@ public class MainActivity extends AppCompatActivity {
     private void btn_send_onClick(View v){
         txt_serverAnswer.setText(R.string.server_loading_text);
 
-        String matrikelnummer = edtext_input.getText().toString();
-        if (matrikelnummer.isEmpty()) {
-            txt_serverAnswer.setText(R.string.empty_number_text);
-            return;
-        }
+        String matrikelnummer = getMatriculateNumber();
+        if (matrikelnummer == null) return;
+
         disposable = networkManager.calculateResult(matrikelnummer)
                                    .observeOn(AndroidSchedulers.mainThread())
                                    .subscribe(res -> {
@@ -67,6 +66,33 @@ public class MainActivity extends AppCompatActivity {
                                                 txt_serverAnswer.setText(R.string.server_error_text);
                                    });
     }
+
+    private void btn_calculate_onClick(View v){
+        String matrikelnummer = getMatriculateNumber();
+        if (matrikelnummer == null) return;
+
+        char[] chars = matrikelnummer.toCharArray();
+        int sum = Character.getNumericValue(chars[0]);
+
+        for (int i=1; i<chars.length; i++) {
+            int num = Character.getNumericValue(chars[i]);
+            if (i % 2 != 0) sum -= num;
+            else sum += num;
+            Log.d("ASD", String.valueOf(sum));
+
+        }
+        txt_serverAnswer.setText(String.format(Locale.GERMAN, "Altern. Quersumme: %d ist %s gerade.", sum, sum % 2 == 0 ? "" : "nicht"));
+    }
+
+    private String getMatriculateNumber(){
+        String matrikelnummer = edtext_input.getText().toString();
+        if (matrikelnummer.isEmpty()) {
+            txt_serverAnswer.setText(R.string.empty_number_text);
+            return null;
+        }
+        return matrikelnummer;
+    }
+
 
     @Override
     protected void onDestroy() {
