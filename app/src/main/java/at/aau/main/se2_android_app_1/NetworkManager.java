@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.SocketException;
+import java.util.Objects;
 
 public class NetworkManager {
     private static final String SERVER_URL = "se2-submission.aau.at";
@@ -19,10 +21,11 @@ public class NetworkManager {
             String result;
             try {
                 Socket socket = new Socket(SERVER_URL, SERVER_PORT);
+                socket.setSoTimeout(10 * 1000);
 
                 OutputStream out = socket.getOutputStream();
                 out.write(matrikelnummer.getBytes());
-                socket.shutdownOutput();
+                out.write('\n');
 
                 InputStream in = socket.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -30,7 +33,7 @@ public class NetworkManager {
                 result = reader.readLine();
                 socket.close();
             }catch (IOException e){
-                result = e.getCause().getMessage();
+                result = Objects.requireNonNull(e.getCause()).getMessage();
                 e.printStackTrace();
             }
             return result;

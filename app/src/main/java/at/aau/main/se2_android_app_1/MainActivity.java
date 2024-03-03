@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
             int num = Character.getNumericValue(chars[i]);
             if (i % 2 != 0) sum -= num;
             else sum += num;
-            Log.d("ASD", String.valueOf(sum));
 
         }
         txt_serverAnswer.setText(String.format(Locale.GERMAN, "Altern. Quersumme: %d ist %s gerade.", sum, sum % 2 == 0 ? "" : "nicht"));
