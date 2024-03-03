@@ -1,7 +1,6 @@
-package at.aau.main.se2_android_app_1;
+package at.aau.main.application;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.Locale;
 
+import at.aau.main.network.NetworkManager;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
 

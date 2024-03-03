@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "at.aau.main.se2_android_app_1"
+    namespace = "at.aau.main.application"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "at.aau.main.se2_android_app_1"
+        applicationId = "at.aau.main.application"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

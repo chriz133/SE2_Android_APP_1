@@ -1,4 +1,4 @@
-package at.aau.main.se2_android_app_1;
+package at.aau.main.application;
 
 import android.content.Context;
 
