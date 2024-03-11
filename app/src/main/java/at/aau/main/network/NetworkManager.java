@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Objects;
 
 public class NetworkManager {
@@ -32,6 +32,9 @@ public class NetworkManager {
 
                 result = reader.readLine();
                 socket.close();
+            }catch (UnknownHostException e){
+                result = "Verbindung zum Host kann nicht hergestellt werden! Mit Netzwerk verbunden?";
+                e.printStackTrace();
             }catch (IOException e){
                 result = Objects.requireNonNull(e.getCause()).getMessage();
                 e.printStackTrace();
